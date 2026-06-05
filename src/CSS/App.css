@@ -1,0 +1,47 @@
+h3 {
+    text-align: center;
+}
+table {
+    border: solid thin black;
+    width: 80%;
+    margin: auto;
+}
+td, th {
+    border: solid thin black;
+    padding: 5px 10px;
+}
+th {
+    background: lightgrey;
+}
+
+.show {
+    display: table-row;
+}
+
+.hide {
+    display: none;
+}
+
+#pag {
+    width: 80%;
+    margin: 20px auto;
+}
+
+#pag span {
+    margin: 0 20px;
+}
+#pag span:hover {
+    cursor: pointer;
+}
+#pag span.active {
+    color: blue;
+    font-weight: bold;
+}
+
+form, h4 {
+    margin: 20px 145px;
+}
+
+button {
+    margin-right: 5px;
+}
