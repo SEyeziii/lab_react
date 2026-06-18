@@ -1,29 +1,31 @@
 import { useState } from 'react';
 import TableHead from './TableHead.js';
 import TableBody from './TableBody.js';
+import Filter from './Filter.js';
 import '../CSS/index.css';
 import '../CSS/App.css';
-import Filter from './Filter.js';
 
 const Table = (props) => {
-
     const showPag = props.showPag === true;
 
     const [activePage, setActivePage] = useState("1");
+    const [dataTable, setDataTable] = useState(props.data);
+
+
+
+    const columns = props.data.length > 0 ? Object.keys(props.data[0]) : [];
 
     const changeActive = (event) => {
         setActivePage(event.target.innerHTML);
     };
-
-    const [dataTable, setDataTable] = useState(props.data);
 
     const updateDateTable = (value) => {
         setDataTable(value);
         setActivePage("1");
     };
 
-    const amountRows = showPag ? Number(props.amountRows) : dataTable.length;
 
+    const amountRows = showPag ? Number(props.amountRows) : dataTable.length;
     const totalPages = showPag ? Math.ceil(dataTable.length / props.amountRows) : 1;
     const arr = Array.from({ length: totalPages }, (v, i) => i + 1);
 
@@ -46,9 +48,10 @@ const Table = (props) => {
                 fullData={props.data}
             />
 
+
             <div className="table-container">
                 <table>
-                    <TableHead head={Object.keys(props.data[0])} />
+                    <TableHead head={columns} />
                     <TableBody
                         body={dataTable}
                         amountRows={amountRows}

@@ -1,12 +1,12 @@
 import './CSS/App.css';
-import buildings from './data.js';
+import carsData from './data.js';
 import Table from './components/Table.js';
 
 function App() {
     return (
         <div className="App">
-            <h3>Самые высокие здания и сооружения</h3>
-            <Table data={ buildings } amountRows="15" showPag={true} />
+            <h3>Японские автомобили</h3>
+            <Table data={ carsData } amountRows="15" showPag={true} />
         </div>
     );
 }

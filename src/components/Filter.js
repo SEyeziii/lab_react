@@ -7,19 +7,20 @@ const Filter = (props) => {
         event.preventDefault();
 
         const filterField = {
-            'Название' : event.target['structure'].value.toLowerCase(),
-            'Тип' : event.target['type'].value.toLowerCase(),
-            'Страна' : event.target['country'].value.toLowerCase(),
-            'Город' : event.target['city'].value.toLowerCase(),
+            'Марка' : event.target['marka'].value.toLowerCase(),
+            'Модель' : event.target['model'].value.toLowerCase(),
             'Год' : [event.target['year_start'].value, event.target['year_end'].value],
-            'Высота' : [event.target['height_start'].value, event.target['height_end'].value]
+            'Двигатель' : event.target['dvig'].value.toLowerCase(),
+            'Мощность' : [event.target['moh_start'].value, event.target['moh_end'].value],
+            'Тип кузова' : [event.target['type'].value],
+            'Разгон' : [event.target['raz_start'].value, event.target['raz_end'].value]
         };
 
         let arr = props.fullData;
         for (const key in filterField) {
             const value = filterField[key];
 
-            if (key === 'Год' || key === 'Высота') {
+            if (key === 'Год' || key === 'Мощность' || key === 'Разгон') {
                 let [min, max] = value;
                 if (min === '') {
                     min = -Infinity;
@@ -55,20 +56,20 @@ const Filter = (props) => {
     return (
         <form onSubmit={handleSubmit} onReset={handleReset}>
             <p>
-                <label>Название: </label>
-                <input name='structure' type="text" />
+                <label>Марка: </label>
+                <input name='marka' type="text" />
             </p>
             <p>
-                <label>Тип: </label>
+                <label>Модель: </label>
+                <input name='model' type="text" />
+            </p>
+            <p>
+                <label>Двигатель: </label>
+                <input name='dvig' type="text" />
+            </p>
+            <p>
+                <label>Тип кузова: </label>
                 <input name='type' type="text" />
-            </p>
-            <p>
-                <label>Страна: </label>
-                <input name='country' type="text" />
-            </p>
-            <p>
-                <label>Город: </label>
-                <input name='city' type="text" />
             </p>
             <p>
                 <label>Год от: </label>
@@ -79,12 +80,20 @@ const Filter = (props) => {
                 <input name='year_end' type="number" />
             </p>
             <p>
-                <label>Высота от: </label>
-                <input name='height_start' type="number" />
+                <label>Мощность от: </label>
+                <input name='moh_start' type="number" />
             </p>
             <p>
-                <label>Высота до: </label>
-                <input name='height_end' type="number" />
+                <label>мощноcть до: </label>
+                <input name='moh_end' type="number" />
+            </p>
+            <p>
+                <label>Разгон от: </label>
+                <input name='raz_start' type="number" />
+            </p>
+            <p>
+                <label>Разгон до: </label>
+                <input name='raz_end' type="number" />
             </p>
             <p>
                 <button type="submit">Фильтровать</button>

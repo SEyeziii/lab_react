@@ -24,6 +24,7 @@ const TableBody = (props) => {
         </tr>
     );
 
+
     return <tbody>{tbody}</tbody>;
 }
 
