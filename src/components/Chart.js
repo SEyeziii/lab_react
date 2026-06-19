@@ -3,7 +3,7 @@ import ChartDraw from './ChartDraw.js';
 import * as d3 from "d3";
 
 const Chart = (props) => {
-    const [ox, setOx] = useState("Марка");
+    const [ox, setOx] = useState("Марка"); // По умолчанию группируем по Маркам
     const [oy, setOy] = useState([true, false]);
     const [chartType, setChartType] = useState("scatter");
 
@@ -17,10 +17,13 @@ const Chart = (props) => {
     const createArrGraph = (data, key) => {
         if (!data || data.length === 0) return [];
 
+        // Группируем машины по выбранному признаку (Марка, Модель, Год, Тип кузова)
         const groupObj = d3.group(data, d => d[key]);
         let arrGraph = [];
+
         for (let entry of groupObj) {
-            let minMax = d3.extent(entry[1].map(d => Number(d['Мощность']) || Number(d['Разгон']) || 0));
+            // Рассчитываем мин/макс на основе числового поля "Мощность" (можно заменить на "Разгон")
+            let minMax = d3.extent(entry[1].map(d => Number(d['Мощность'] || 0)));
             arrGraph.push({ labelX: entry[0], values: minMax });
         }
 
@@ -35,35 +38,28 @@ const Chart = (props) => {
 
     return (
         <>
-            <h4>Визуализация</h4>
-            <form onSubmit={ handleSubmit }>
-                <p> Значение по оси OX: </p>
+            <form onSubmit={handleSubmit}>
+                <p> Значение по оси OX </p>
                 <div>
-                    <input
-                        type="radio"
-                        name="ox"
-                        value="Марка"
-                        checked={ ox === "Марка" }
-                        onChange={() => setOx("Марка")}
-                    />
-                    Марка
+                    <label>
+                        <input type="radio" name="ox" value="Марка" defaultChecked={ ox === "Марка" }/>
+                        Марка
+                    </label>
                     <br/>
-                    <input
-                        type="radio"
-                        name="ox"
-                        value="Год"
-                        checked={ ox === "Год" }
-                        onChange={() => setOx("Год")}
-                    />
-                    Год
+
+                    <br/>
+                    <label>
+                        <input type="radio" name="ox" value="Год" defaultChecked={ ox === "Год" }/>
+                        Год
+                    </label>
                 </div>
 
-                <p> Значение по оси OY </p>
+                <p> Значение по оси OY (Мощность) </p>
                 <div>
                     <input type="checkbox" name="oy" defaultChecked={ oy[0] === true } />
-                    Максимальное значение <br/>
+                    Максимальная мощность <br/>
                     <input  type="checkbox" name="oy" defaultChecked={ oy[1] === true } />
-                    Минимальное значение
+                    Минимальная мощность
                 </div>
 
                 <p> Тип диаграммы: </p>

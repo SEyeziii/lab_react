@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef } from "react";
 const ChartDraw = (props) => {
     const chartRef = useRef(null);
 
-    // Жестко задаем фиксированные размеры графика (например, 800 на 400)
+    // Жестко фиксированная аккуратная ширина и высота графика
     const width = 800;
     const height = 400;
 
@@ -15,13 +15,11 @@ const ChartDraw = (props) => {
         right: 20
     };
 
-    // Область построения осей и точек
     const boundsWidth = width - margin.left - margin.right;
     const boundsHeight = height - margin.top - margin.bottom;
 
     const { oy = [true, false], chartType = "scatter" } = props;
 
-    // Собираем все значения для корректного расчета масштаба по оси OY
     const allValues = useMemo(() => {
         return props.data.flatMap(d => {
             const vals = [];
@@ -33,7 +31,6 @@ const ChartDraw = (props) => {
 
     const [minVal, maxVal] = useMemo(() => d3.extent(allValues), [allValues]);
 
-    // Масштабирование по оси OX
     const scaleX = useMemo(() => {
         return d3
             .scaleBand()
@@ -42,7 +39,6 @@ const ChartDraw = (props) => {
             .padding(0.2);
     }, [props.data, boundsWidth]);
 
-    // Масштабирование по оси OY
     const scaleY = useMemo(() => {
         return d3
             .scaleLinear()
@@ -54,13 +50,12 @@ const ChartDraw = (props) => {
         if (props.data.length === 0) return;
 
         const svg = d3.select(chartRef.current);
-        svg.selectAll("*").remove(); // Очищаем старый график перед перерисовкой
+        svg.selectAll("*").remove();
 
-        // Задаем размеры SVG через атрибуты, чтобы они применились мгновенно
         svg.attr("width", width)
             .attr("height", height);
 
-        // Сетка / Задний фон графика
+        // Задний фон / Сетка
         svg.append("rect")
             .attr("x", margin.left)
             .attr("y", margin.top)
@@ -69,7 +64,7 @@ const ChartDraw = (props) => {
             .style("fill", "#fdfdfd")
             .style("stroke", "#ddd");
 
-        // Отрисовка оси OX
+        // Ось X
         const xAxis = d3.axisBottom(scaleX);
         svg.append("g")
             .attr("transform", `translate(${margin.left}, ${margin.top + boundsHeight})`)
@@ -78,9 +73,9 @@ const ChartDraw = (props) => {
             .style("text-anchor", "end")
             .attr("dx", "-.8em")
             .attr("dy", ".15em")
-            .attr("transform", "rotate(-35)");
+            .attr("transform", "rotate(-25)");
 
-        // Отрисовка оси OY
+        // Ось Y
         const yAxis = d3.axisLeft(scaleY);
         svg.append("g")
             .attr("transform", `translate(${margin.left}, ${margin.top})`)
@@ -88,7 +83,6 @@ const ChartDraw = (props) => {
 
         const colors = { max: "red", min: "blue" };
 
-        // Отрисовка графиков в зависимости от выбранного типа
         if (chartType === "scatter") {
             const drawDots = (valueIndex, color) => {
                 svg.selectAll(`.dot-${valueIndex}`)
@@ -139,14 +133,14 @@ const ChartDraw = (props) => {
     }, [scaleX, scaleY, props.data, oy, chartType, boundsWidth, boundsHeight]);
 
     return (
-        // Контейнер теперь имеет прокрутку, если график перестанет влезать в экран (на мобильных)
         <div style={{ width: "100%", overflowX: "auto", marginTop: "20px" }}>
             <svg
                 ref={chartRef}
                 style={{
                     display: "block",
                     width: `${width}px`,
-                    height: `${height}px`
+                    height: `${height}px`,
+                    margin: "0 auto" // По центру страницы
                 }}
             ></svg>
         </div>
