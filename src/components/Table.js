@@ -3,12 +3,11 @@ import TableHead from './TableHead.js';
 import TableBody from './TableBody.js';
 import '../CSS/index.css';
 import '../CSS/App.css';
+import Filter from './Filter.js';
 
 const Table = (props) => {
     const showPag = props.showPag === true;
-
     const [activePage, setActivePage] = useState("1");
-
     const displayData = props.data;
     const columns = displayData.length > 0 ? Object.keys(displayData[0]) : [];
 

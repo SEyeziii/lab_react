@@ -4,11 +4,10 @@ import carsData from './data.js';
 import Table from './components/Table.js';
 import Sort from './components/sort.js';
 import Filter from './components/Filter.js';
+import Chart from './components/Chart.js'; // Импортируем новый график
 
 function App() {
-
     const [filteredData, setFilteredData] = useState(carsData);
-
     const [sortedData, setSortedData] = useState(carsData);
 
     const columns = carsData.length > 0 ? Object.keys(carsData[0]) : [];
@@ -38,6 +37,9 @@ function App() {
                 data={filteredData}
                 onApplySort={handleSortApply}
             />
+
+            {/* Выводим график на основе текущих отфильтрованных данных автомобиля */}
+            <Chart data={filteredData} />
 
             <Table
                 data={sortedData}
